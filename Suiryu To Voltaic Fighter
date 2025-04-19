@@ -1,1 +1,209 @@
+local lplr = game.Players.LocalPlayer
+local char = lplr.Character or lplr.CharacterAdded:Wait()
 
+-- Object Removers (will remove vfx on the weapons, though)
+local katana1 = false -- Make true if you want to remove Blade Master's katana
+local katana2 = false -- Make true if you want to remove Sonic's katana
+local bat = false -- Make true if you want to remove Metal Bat's baseball bat
+if katana1 then char:FindFirstChild("Sheathe"):Destroy() char:FindFirstChild("#KATANAWEAPON"):Destroy() end
+if katana2 then char:FindFirstChild("Sheathed"):Destroy() char:FindFirstChild("#NinjaKATANA"):Destroy() end
+if bat then char:FindFirstChild("#BATWEAPON"):Destroy() end
+
+-- Editing names
+local plrgui:PlayerGui = lplr:FindFirstChild("PlayerGui")
+local gui:ScreenGui = plrgui:FindFirstChild("ScreenGui")
+local ultbar:Frame = gui:FindFirstChild("MagicHealth")
+local ultbarclr:Frame = ultbar:FindFirstChild("Health").Bar.Bar
+local ulttext:TextButton = ultbar:FindFirstChild("TextLabel")
+
+-- Awakening text & color
+ulttext.Text = "DC/AC OUTPUT"
+ultbarclr.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- In RGB values (red, green, blue)
+
+local hotbar:ScreenGui = plrgui:FindFirstChild("Hotbar")
+local backpack = hotbar:FindFirstChild("Backpack")
+local hotbarf:Frame = backpack:FindFirstChild("Hotbar")
+local bbb1, bbb2, bbb3, bbb4 = hotbarf["1"], hotbarf["2"], hotbarf["3"], hotbarf["4"]
+local bb1, bb2, bb3, bb4 = bbb1["Base"], bbb2["Base"], bbb3["Base"], bbb4["Base"]
+local b1, b2, b3, b4 = bb1["ToolName"], bb2["ToolName"], bb3["ToolName"], bb4["ToolName"]
+
+-- Move names
+local function SetMoveNames()
+    b1.Text = "B̸͕͙̃̋͝R̸̗̠̹̅͗Ị̸̈́̌͑D̷̗̝̉͘G̷̱͈̥̒Ẽ̶̬̣͂̔ͅ | BRIDGED"
+    b2.Text = "D̶̛̺̺̅I̸̳͂S̵̢̛̭P̷̛͓͉̒͜E̵͕̥̼͋̏R̶̛̮̝͝S̵̻̫̓Ë̶̯̫̪ | DISPERSE"
+    b3.Text = "S̸̼͈͘H̸̰̊́O̷̟͚̾͋R̶̠̈́́T̷̟͛͋ ̴̲̉̓C̵̹̗̈́I̶̢͒̌R̸̳̋C̶͉͗̾U̷̼͕̽̈́I̶͕͇͑̊T̷͙̐̇ | SHORT CIRCUIT"
+    b4.Text = "R̴͔̈́E̷͕̜͒́Ẁ̴̝̙̌I̶̗͍̒R̴̖̼͛E̴̦̽̎ͅD̵̖̈́͋ | REWIRED"
+end
+SetMoveNames()
+
+-- Awakening move names
+local function SetAwkNames()
+    b1.Text = "G̴̮̞̐R̷̯̭̔O̶͓͆Ū̶̢͜N̸̙̙̄̂D̴̪̊͂ͅË̷̞D̴̘́̇ | GROUNDED"
+    b2.Text = "F̸̤̉L̶̙̝̈́Ǫ̷͂͌Ẅ̴̧́͆I̷̙̋N̸̬̍̅ͅG̷͓̬̿ ̵̞́ͅV̶̠̗͂O̸̧̹͂́L̴͙͙̊T̴̙̀Ą̶͕̒Ḡ̵̥̫́Ë̴̘͚́ | FLOWING VOLTAGE"
+    b3.Text = "S̶̪̉̇O̷̩͊L̵͚̙͗D̸̘̳͊E̸̹̕R̴̯͙͋Ȇ̵͚́D̴̦̲͠ | SOLDERED"
+    b4.Text = "È̵̮̦̀L̴̨̺̂Ḙ̵͋C̸̡͊͐T̷͙̖͂͘R̸̖̿͗I̶̭̥̎C̷͉͔͑̌A̸͔̖̕L̶͓̯͋ ̷̧̜̈́̑F̶̢̰̊͒İ̶̝̦̈́R̵̫̃͗E̵̫͂͆ͅ | ELECTRICAL FIRE"
+end
+
+-- Animations
+-- Old Animations (Animations that are currently being replaced)
+local oldAnimations = {
+    m1 = "18716133404", -- Replace with the old m1 animation ID
+    m2 = "18716143973", -- Replace with the old m2 animation ID
+    m3 = "18169291044", -- Replace with the old m3 animation ID
+    m4 = "18716149223", -- Replace with the old m4 animation ID
+    ds = "10470104242", -- Actually, DON'T replace this
+    up = "10503381238", -- Actually, DON'T replace this
+    wc = "18716197426", -- Replace with the old wall combo animation ID
+    fdash = "18715858574", -- Actually, DON'T replace this
+    bdash = "...", -- Actually, DON'T replace this
+    ldash = "10480796021", -- Actually, DON'T replace this
+    rdash = "10480793962", -- Actually, DON'T replace this
+    awk = "18435535291", -- Replace with the old awakening animation ID
+    move1 = "18716581594", -- Replace with the old move 1 animation ID
+    move2 = "17838006839", -- Replace with the old move 2 animation ID
+    move3 = "18716588373", -- Replace with the old move 3 animation ID
+    move4 = "18179181663", -- Replace with the old move 4 animation ID
+    amove1 = "129651400898906", -- Replace with the old awakening move 1 animation ID
+    amove2 = "18896229321", -- Replace with the old awakening move 2 animation ID
+    amove3 = "18897118507", -- Replace with the old awakening move 3 animation ID
+    amove4 = "102814369422840", -- Replace with the old awakening move 4 animation ID
+}
+
+-- New Animations (Animations that will replace the old ones)
+local newAnimations = {
+    m1 = "16515503507", -- Replace with your new m1 animation ID
+    m2 = "17889461810", -- Replace with your new m2 animation ID
+    m3 = "17325513870", -- Replace with your new m3 animation ID
+    m4 = "17889290569", -- Replace with your new m4 animation ID
+    ds = "13294790250", -- Replace with your new downslam animation ID
+    up = "13501296372", -- Replace with your new mini uppercut animation ID
+    wc = "14900168720", -- Replace with your new wall combo animation ID
+    fdash = "17838006839", -- Replace with your new front dash animation ID
+    bdash = "696969", -- Replace with your new back dash animation ID
+    ldash = "10480796021", -- Replace with your new left dash animation ID
+    rdash = "10480793962", -- Replace with your new right dash animation ID
+    awk = "18716893399", -- Replace with your new awakening animation ID
+    move1 = "18716022049", -- Replace with your new move 1 animation ID
+    move2 = "12832505612", -- Replace with your new move 2 animation ID
+    move3 = "13556985475", -- Replace with your new move 3 animation ID
+    move4 = "12467789963", -- Replace with your new move 4 animation ID
+    amove1 = "100558589307006", -- Replace with your new move awakening 1 animation ID
+    amove2 = "18464372850", -- Replace with your new move awakening 2 animation ID
+    amove3 = "105811521074269", -- Replace with your new move awakening 3 animation ID
+    amove4 = "17278415853", -- Replace with your new move awakening 4 animation ID
+}
+
+-- Code/functions to use in the handlers
+local function chat(msg: string)
+    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msg, "All")
+end
+local function playAnimation(id, details)
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    if not humanoid or not humanoid:FindFirstChild("Animator") then
+        warn("Invalid humanoid or humanoid has no Animator.")
+        return
+    end
+    
+    local animation = Instance.new("Animation")
+    animation.AnimationId = "rbxassetid://" .. tostring(id)
+    
+    local animator:Animator = humanoid:FindFirstChild("Animator")
+    local animationTrack = animator:LoadAnimation(animation)
+
+    animationTrack:Play()
+    
+    if details then
+        if details.Priority then
+            animationTrack.Priority = details.Priority
+        end
+        if details.Looped ~= nil then
+            animationTrack.Looped = details.Looped
+        end
+        if details.Speed then
+            animationTrack:AdjustSpeed(details.Speed)
+        end
+        if details.TimePosition then
+            animationTrack.TimePosition = details.TimePosition
+        end
+        if details.Weight then
+            animationTrack:AdjustWeight(details.Weight)
+        end
+    end
+
+    return animationTrack
+end
+
+-- Handlers for each m1s, the ultimate anim, and moves (if it doesnt have handlers, it would be a blank custom moveset script with no vfx, no other stuff other than custom animations)
+local handlers = {
+    m1 = function() end,
+    m2 = function() end,
+    m3 = function() end,
+    m4 = function() end,
+    wc = function() end,
+    fdash = function() end,
+    bdash = function() end,
+    ldash = function() end,
+    rdash = function() end,
+
+    awk = function()
+    end,
+
+    move1 = function()
+    end,
+
+    move2 = function()
+    end,
+
+    move3 = function()
+    end,
+
+    move4 = function()
+    end,
+
+    amove1 = function()
+    end,
+    
+    amove2 = function()
+    end,
+
+    amove3 = function()
+    end,
+
+    amove4 = function()
+    end,
+}
+
+-- Table of animation data for the animations
+local animDt = {
+    move2 = { Speed = 2.7 },
+    move4 = { Speed = 0.4 },
+    amove1 = { Speed = 0.8 },
+    amove2 = { Speed = 2.1 },
+    amove3 = { Speed = 1.4 },
+    amove4 = { Speed = 2.7 },
+}
+
+local hum = char:FindFirstChildOfClass("Humanoid")
+local animator = hum:FindFirstChildOfClass("Animator")
+for k, v in pairs(oldAnimations) do
+    animator.AnimationPlayed:Connect(function(tr)
+        if tr.Animation.AnimationId == "rbxassetid://" .. v and tr.Animation.AnimationId ~= "rbxassetid://" .. newAnimations[k] then
+            tr:Stop()
+            local trdt = animDt[k] or { Weight = 10 }
+            if not trdt["Weight"] then trdt.Weight = 10 end -- Avoid bad animation
+            local newtr = playAnimation(newAnimations[k], trdt)
+            task.spawn(function() handlers[k](newtr) end)
+
+            if k == "awk" then
+                task.wait(1.25) -- Modify for your character's ultimate animation length
+                SetAwkNames()
+            end
+        end
+    end)
+end
+
+lplr:GetAttributeChangedSignal("Ultimate"):Connect(function()
+    if lplr:GetAttribute("Ultimate") == 0 then
+        task.wait(0.5) SetMoveNames()
+    end
+end)
