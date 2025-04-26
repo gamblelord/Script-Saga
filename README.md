@@ -1,0 +1,1 @@
+-- If you sre sseing this, welcome. this is My script saga of Movesets for The Strongest Battlegrounds. Please do not take my movesets and make them your own, i respect you all who use them as templates over Your own scripts.
