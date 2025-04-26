@@ -83,12 +83,12 @@ local newAnimations = {
     bdash = "696969", -- Replace with your new back dash animation ID
     ldash = "10480796021", -- Replace with your new left dash animation ID
     rdash = "10480793962", -- Replace with your new right dash animation ID
-    awk = "13716964686", -- Replace with your new awakening animation ID
+    awk = "16734584478", -- Replace with your new awakening animation ID
     move1 = "15290930205", -- Replace with your new move 1 animation ID
     move2 = "13560306510", -- Replace with your new move 2 animation ID
     move3 = "10480793962", -- Replace with your new move 3 animation ID
     move4 = "130301810149072", -- Replace with your new move 4 animation ID
-    amove1 = "18715898844", -- Replace with your new move awakening 1 animation ID
+    amove1 = "18896229321", -- Replace with your new move awakening 1 animation ID
     amove2 = "17122171961", -- Replace with your new move awakening 2 animation ID
     amove3 = "17325254223", -- Replace with your new move awakening 3 animation ID
     amove4 = "13927612951", -- Replace with your new move awakening 4 animation ID
@@ -163,7 +163,18 @@ local handlers = {
     ldash = function() end,
     rdash = function() end,
 
-    awk = function()
+    awk = function(tr)
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://17757267413"
+sound.Volume = 2
+sound.Parent = workspace
+sound:Play()
+
+-- Stop and clean up after 5 seconds
+task.delay(5, function()
+	sound:Stop()
+	sound:Destroy()
+end)
     end,
 
     move1 = function()
@@ -181,7 +192,56 @@ local handlers = {
     amove1 = function()
     end,
     
-    amove2 = function()
+    amove2 = function(tr)
+task.wait(1)
+local sound = Instance.new("Sound")
+sound.SoundId = "rbxassetid://98076270798343"
+sound.Volume = 2
+sound.Parent = workspace
+sound:Play()
+
+-- Stop and clean up after 5 seconds
+task.delay(1, function()
+	sound:Stop()
+	sound:Destroy()
+end)
+local assetId = 77398613189051 -- Your slash asset ID
+
+-- Get the local player and character
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+
+-- Load the slash model
+local success, result = pcall(function()
+    return game:GetObjects("rbxassetid://" .. assetId)
+end)
+
+if success and #result > 0 then
+    local slash = result[1]
+    slash.Parent = workspace
+
+    -- Ensure the model has a PrimaryPart
+    if not slash.PrimaryPart then
+        slash.PrimaryPart = slash:FindFirstChildWhichIsA("BasePart")
+        if not slash.PrimaryPart then
+            warn("No PrimaryPart found in model.")
+            return
+        end
+    end
+
+    -- Position it in front of the character
+    local offset = hrp.CFrame.LookVector * 5
+    local spawnCFrame = hrp.CFrame + offset
+    slash:SetPrimaryPartCFrame(spawnCFrame)
+
+    -- Stay for 5 seconds
+    wait(5)
+    slash:Destroy()
+    print("Slash removed after 5 seconds.")
+else
+    warn("Failed to load slash asset.")
+end
     end,
 
     amove3 = function()
