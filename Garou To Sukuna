@@ -18,7 +18,7 @@ local ultbarclr:Frame = ultbar:FindFirstChild("Health").Bar.Bar
 local ulttext:TextButton = ultbar:FindFirstChild("TextLabel")
 
 -- Awakening text & color
-ulttext.Text = "ＳＥＲＩＯＵＳ　ＳＥＲＩＥＳ"
+ulttext.Text = "Malevolent"
 ultbarclr.BackgroundColor3 = Color3.fromRGB(136, 0, 0) -- In RGB values (red, green, blue)
 
 local hotbar:ScreenGui = plrgui:FindFirstChild("Hotbar")
@@ -30,19 +30,19 @@ local b1, b2, b3, b4 = bb1["ToolName"], bb2["ToolName"], bb3["ToolName"], bb4["T
 
 -- Move names
 local function SetMoveNames()
-    b1.Text = "One-Punch"
-    b2.Text = "Barrage"
-    b3.Text = "Kickback"
-    b4.Text = "Normal Uppercut"
+    b1.Text = "Scale Of The Dragon"
+    b2.Text = "Repulsion"
+    b3.Text = "Dismantle"
+    b4.Text = "Cleave Dance"
 end
 SetMoveNames()
 
 -- Awakening move names
 local function SetAwkNames()
-    b1.Text = "Death Counter"
-    b2.Text = "Serious Table Flip"
-    b3.Text = "Serious Punch"
-    b4.Text = "Omni Directional Serious Punch"
+    b1.Text = "Binded Cleave"
+    b2.Text = "World Cutting Slash"
+    b3.Text = "Serious Dismantle"
+    b4.Text = "Solaric Beatdown"
 end
 
 -- Animations
@@ -86,7 +86,7 @@ local newAnimations = {
     awk = "13716964686", -- Replace with your new awakening animation ID
     move1 = "18896127525", -- Replace with your new move 1 animation ID
     move2 = "13560306510", -- Replace with your new move 2 animation ID
-    move3 = "17838619895", -- Replace with your new move 3 animation ID
+    move3 = "10480793962", -- Replace with your new move 3 animation ID
     move4 = "130301810149072", -- Replace with your new move 4 animation ID
     amove1 = "18715898844", -- Replace with your new move awakening 1 animation ID
     amove2 = "17122171961", -- Replace with your new move awakening 2 animation ID
