@@ -5,7 +5,7 @@ local char = lplr.Character or lplr.CharacterAdded:Wait()
 -- Object Removers (will remove vfx on the weapons, though)
 local katana1 = false -- Make true if you want to remove Blade Master's katana
 local katana2 = false -- Make true if you want to remove Sonic's katana
-local bat = false -- Make true if you want to remove Metal Bat's baseball bat
+local bat = true -- Make true if you want to remove Metal Bat's baseball bat
 if katana1 then char:FindFirstChild("Sheathe"):Destroy() char:FindFirstChild("#KATANAWEAPON"):Destroy() end
 if katana2 then char:FindFirstChild("Sheathed"):Destroy() char:FindFirstChild("#NinjaKATANA"):Destroy() end
 if bat then char:FindFirstChild("#BATWEAPON"):Destroy() end
@@ -18,7 +18,7 @@ local ultbarclr:Frame = ultbar:FindFirstChild("Health").Bar.Bar
 local ulttext:TextButton = ultbar:FindFirstChild("TextLabel")
 
 -- Awakening text & color
-ulttext.Text = "ＳＥＲＩＯＵＳ　ＳＥＲＩＥＳ"
+ulttext.Text = "Verdict Reached"
 ultbarclr.BackgroundColor3 = Color3.fromRGB(136, 0, 0) -- In RGB values (red, green, blue)
 
 local hotbar:ScreenGui = plrgui:FindFirstChild("Hotbar")
@@ -59,11 +59,11 @@ local oldAnimations = {
     bdash = "...", -- Actually, DON'T replace this
     ldash = "10480796021", -- Actually, DON'T replace this
     rdash = "10480793962", -- Actually, DON'T replace this
-    awk = "12447707844", -- Replace with the old awakening animation ID
-    move1 = "10468665991", -- Replace with the old move 1 animation ID
-    move2 = "10466974800", -- Replace with the old move 2 animation ID
-    move3 = "10471336737", -- Replace with the old move 3 animation ID
-    move4 = "12510170988", -- Replace with the old move 4 animation ID
+    awk = "18716765679", -- Replace with the old awakening animation ID
+    move1 = "14003607057", -- Replace with the old move 1 animation ID
+    move2 = "14046756619", -- Replace with the old move 2 animation ID
+    move3 = "14299135500", -- Replace with the old move 3 animation ID
+    move4 = "14351441234", -- Replace with the old move 4 animation ID
     amove1 = "12983333733", -- Replace with the old awakening move 1 animation ID
     amove2 = "11365563255", -- Replace with the old awakening move 2 animation ID
     amove3 = "12983333733", -- Replace with the old awakening move 3 animation ID
@@ -83,11 +83,11 @@ local newAnimations = {
     bdash = "696969", -- Replace with your new back dash animation ID
     ldash = "10480796021", -- Replace with your new left dash animation ID
     rdash = "10480793962", -- Replace with your new right dash animation ID
-    awk = "13716964686", -- Replace with your new awakening animation ID
-    move1 = "18896127525", -- Replace with your new move 1 animation ID
-    move2 = "13560306510", -- Replace with your new move 2 animation ID
+    awk = "15992808444", -- Replace with your new awakening animation ID
+    move1 = "18716588373", -- Replace with your new move 1 animation ID
+    move2 = "18896229321", -- Replace with your new move 2 animation ID
     move3 = "17838619895", -- Replace with your new move 3 animation ID
-    move4 = "130301810149072", -- Replace with your new move 4 animation ID
+    move4 = "12467789963", -- Replace with your new move 4 animation ID
     amove1 = "18715898844", -- Replace with your new move awakening 1 animation ID
     amove2 = "17122171961", -- Replace with your new move awakening 2 animation ID
     amove3 = "17325254223", -- Replace with your new move awakening 3 animation ID
@@ -163,7 +163,36 @@ local handlers = {
     ldash = function() end,
     rdash = function() end,
 
-    awk = function()
+    awk = function(tr)
+-- Add a light yellow Trail to the sword
+local function addTrail(part)
+	-- Create attachments
+	local att1 = Instance.new("Attachment", part)
+	local att2 = Instance.new("Attachment", part)
+
+	-- Position attachments (adjust based on sword orientation)
+	att1.Position = Vector3.new(0, 1.5, 0)
+	att2.Position = Vector3.new(0, -1.5, 0)
+
+	-- Create trail
+	local trail = Instance.new("Trail")
+	trail.Name = "SwordTrail"
+	trail.Attachment0 = att1
+	trail.Attachment1 = att2
+	trail.Color = ColorSequence.new{
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 150)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
+	}
+	trail.Transparency = NumberSequence.new{
+		NumberSequenceKeypoint.new(0, 0.1),
+		NumberSequenceKeypoint.new(1, 1)
+	}
+	trail.Lifetime = 0.25
+	trail.LightEmission = 1
+	trail.MinLength = 0.1
+	trail.Enabled = true
+	trail.Parent = part
+end
     end,
 
     move1 = function()
@@ -223,3 +252,4 @@ lplr:GetAttributeChangedSignal("Ultimate"):Connect(function()
         task.wait(0.5) SetMoveNames()
     end
 end)
+
