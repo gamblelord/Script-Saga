@@ -164,34 +164,46 @@ local handlers = {
     rdash = function() end,
 
     awk = function(tr)
--- Add a light yellow Trail to the sword
-local function addTrail(part)
-	-- Create attachments
-	local att1 = Instance.new("Attachment", part)
-	local att2 = Instance.new("Attachment", part)
+local assetId = "rbxassetid://119553657837434"
+local model = game:GetObjects(assetId)[1]
+if not model then warn("Failed to load model") return end
 
-	-- Position attachments (adjust based on sword orientation)
-	att1.Position = Vector3.new(0, 1.5, 0)
-	att2.Position = Vector3.new(0, -1.5, 0)
+local player = game:GetService("Players").LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rightArm = character:FindFirstChild("Right Arm")
+if not rightArm then warn("Right Arm not found") return end
 
-	-- Create trail
-	local trail = Instance.new("Trail")
-	trail.Name = "SwordTrail"
-	trail.Attachment0 = att1
-	trail.Attachment1 = att2
-	trail.Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 150)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))
-	}
-	trail.Transparency = NumberSequence.new{
-		NumberSequenceKeypoint.new(0, 0.1),
-		NumberSequenceKeypoint.new(1, 1)
-	}
-	trail.Lifetime = 0.25
-	trail.LightEmission = 1
-	trail.MinLength = 0.1
-	trail.Enabled = true
-	trail.Parent = part
+-- Set PrimaryPart
+if not model.PrimaryPart then
+	local base = model:FindFirstChildWhichIsA("BasePart", true)
+	if base then model.PrimaryPart = base else warn("No PrimaryPart") return end
+end
+
+-- Scale the model
+local scaleFactor = 2
+for _, part in ipairs(model:GetDescendants()) do
+	if part:IsA("BasePart") then
+		part.Size *= scaleFactor
+	end
+end
+
+-- Offset: attach to side of the forearm
+local offset = CFrame.new(1.2, 0, 0) * CFrame.Angles(0, math.rad(90), 0)
+
+-- Position and weld
+model:SetPrimaryPartCFrame(rightArm.CFrame * offset)
+model.PrimaryPart.Anchored = false
+model.Parent = character
+
+for _, part in ipairs(model:GetDescendants()) do
+	if part:IsA("BasePart") then
+		local weld = Instance.new("Weld")
+		weld.Part0 = rightArm
+		weld.Part1 = part
+		weld.C0 = rightArm.CFrame:inverse() * part.CFrame
+		weld.Parent = rightArm
+		part.Anchored = false
+	end
 end
     end,
 
