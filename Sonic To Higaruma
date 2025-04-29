@@ -1,52 +1,3 @@
--- SummonMallet.lua
-local assetId = 2535884047
-_G.MalletModel = nil -- Global for tracking
-
-local player = game:GetService("Players").LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local rightArm = character:WaitForChild("Right Arm")
-
-local success, result = pcall(function()
-	return game:GetObjects("rbxassetid://" .. assetId)
-end)
-
-if success and #result > 0 then
-	local asset = result[1]
-	asset.Parent = character
-	_G.MalletModel = asset -- Save mallet globally
-
-	local basePart
-
-	if asset:IsA("Accessory") then
-		basePart = asset:FindFirstChild("Handle")
-	elseif asset:IsA("BasePart") then
-		basePart = asset
-	elseif asset:IsA("Model") then
-		basePart = asset:FindFirstChildWhichIsA("BasePart", true)
-	end
-
-	if not basePart then
-		warn("No usable BasePart or Handle found in mallet.")
-		return
-	end
-
-	local offset = CFrame.Angles(0, math.rad(180), math.rad(90)) * CFrame.new(0, -1.2, 0)
-	basePart.CFrame = rightArm.CFrame * offset
-
-	basePart.Anchored = false
-	basePart.CanCollide = false
-
-	local weld = Instance.new("Weld")
-	weld.Part0 = rightArm
-	weld.Part1 = basePart
-	weld.C0 = rightArm.CFrame:inverse() * basePart.CFrame
-	weld.Parent = rightArm
-
-	print("Mallet summoned and attached.")
-else
-	warn("Failed to load mallet asset.")
-end
-
 print("This file was made by Gamblelord on github.")
 local lplr = game.Players.LocalPlayer
 local char = lplr.Character or lplr.CharacterAdded:Wait()
@@ -264,24 +215,222 @@ if success and #result > 0 then
 else
 	warn("Failed to load asset.")
 end
-if _G.MalletModel and _G.MalletModel.Parent then
-        _G.MalletModel:Destroy()
-        _G.MalletModel = nil
-        print("Mallet destroyed inside Awk function.")
-    end
+    end,
+
+    move1 = function(tr)
+local assetId = 2535884047
+
+local player = game:GetService("Players").LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rightArm = character:WaitForChild("Right Arm")
+
+local success, result = pcall(function()
+	return game:GetObjects("rbxassetid://" .. assetId)
+end)
+
+if success and #result > 0 then
+	local asset = result[1]
+	asset.Parent = character
+
+	local basePart
+
+	if asset:IsA("Accessory") then
+		basePart = asset:FindFirstChild("Handle")
+	elseif asset:IsA("BasePart") then
+		basePart = asset
+	elseif asset:IsA("Model") then
+		basePart = asset:FindFirstChildWhichIsA("BasePart", true)
+	end
+
+	if not basePart then
+		warn("No usable BasePart or Handle found inside asset.")
+		return
+	end
+
+	-- FINAL corrected CFrame rotation
+	local offset = CFrame.Angles(0, math.rad(180), math.rad(90)) * CFrame.new(0, -1, 0)
+	basePart.CFrame = rightArm.CFrame * offset
+
+	basePart.Anchored = false
+	basePart.CanCollide = false
+
+	local weld = Instance.new("Weld")
+	weld.Part0 = rightArm
+	weld.Part1 = basePart
+	weld.C0 = rightArm.CFrame:inverse() * basePart.CFrame
+	weld.Parent = rightArm
+
+	print("Sword now correctly attached and rotated in Right Hand.")
+
+	-- Wait for 3 seconds and then destroy the asset
+	task.wait(3)
+	asset:Destroy()
+	print("Asset destroyed after 3 seconds.")
+else
+	warn("Failed to load asset.")
 end
     end,
 
-    move1 = function()
+    move2 = function(tr)
+local assetId = 2535884047
+
+local player = game:GetService("Players").LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rightArm = character:WaitForChild("Right Arm")
+
+local success, result = pcall(function()
+	return game:GetObjects("rbxassetid://" .. assetId)
+end)
+
+if success and #result > 0 then
+	local asset = result[1]
+	asset.Parent = character
+
+	local basePart
+
+	if asset:IsA("Accessory") then
+		basePart = asset:FindFirstChild("Handle")
+	elseif asset:IsA("BasePart") then
+		basePart = asset
+	elseif asset:IsA("Model") then
+		basePart = asset:FindFirstChildWhichIsA("BasePart", true)
+	end
+
+	if not basePart then
+		warn("No usable BasePart or Handle found inside asset.")
+		return
+	end
+
+	-- FINAL corrected CFrame rotation
+	local offset = CFrame.Angles(0, math.rad(180), math.rad(90)) * CFrame.new(0, -1, 0)
+	basePart.CFrame = rightArm.CFrame * offset
+
+	basePart.Anchored = false
+	basePart.CanCollide = false
+
+	local weld = Instance.new("Weld")
+	weld.Part0 = rightArm
+	weld.Part1 = basePart
+	weld.C0 = rightArm.CFrame:inverse() * basePart.CFrame
+	weld.Parent = rightArm
+
+	print("Sword now correctly attached and rotated in Right Hand.")
+
+	-- Wait for 3 seconds and then destroy the asset
+	task.wait(3)
+	asset:Destroy()
+	print("Asset destroyed after 3 seconds.")
+else
+	warn("Failed to load asset.")
+end
     end,
 
-    move2 = function()
+    move3 = function(tr)
+local assetId = 2535884047
+
+local player = game:GetService("Players").LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rightArm = character:WaitForChild("Right Arm")
+
+local success, result = pcall(function()
+	return game:GetObjects("rbxassetid://" .. assetId)
+end)
+
+if success and #result > 0 then
+	local asset = result[1]
+	asset.Parent = character
+
+	local basePart
+
+	if asset:IsA("Accessory") then
+		basePart = asset:FindFirstChild("Handle")
+	elseif asset:IsA("BasePart") then
+		basePart = asset
+	elseif asset:IsA("Model") then
+		basePart = asset:FindFirstChildWhichIsA("BasePart", true)
+	end
+
+	if not basePart then
+		warn("No usable BasePart or Handle found inside asset.")
+		return
+	end
+
+	-- FINAL corrected CFrame rotation
+	local offset = CFrame.Angles(0, math.rad(180), math.rad(90)) * CFrame.new(0, -1, 0)
+	basePart.CFrame = rightArm.CFrame * offset
+
+	basePart.Anchored = false
+	basePart.CanCollide = false
+
+	local weld = Instance.new("Weld")
+	weld.Part0 = rightArm
+	weld.Part1 = basePart
+	weld.C0 = rightArm.CFrame:inverse() * basePart.CFrame
+	weld.Parent = rightArm
+
+	print("Sword now correctly attached and rotated in Right Hand.")
+
+	-- Wait for 3 seconds and then destroy the asset
+	task.wait(3)
+	asset:Destroy()
+	print("Asset destroyed after 3 seconds.")
+else
+	warn("Failed to load asset.")
+end
     end,
 
-    move3 = function()
-    end,
+    move4 = function(tr)
+local assetId = 2535884047
 
-    move4 = function()
+local player = game:GetService("Players").LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rightArm = character:WaitForChild("Right Arm")
+
+local success, result = pcall(function()
+	return game:GetObjects("rbxassetid://" .. assetId)
+end)
+
+if success and #result > 0 then
+	local asset = result[1]
+	asset.Parent = character
+
+	local basePart
+
+	if asset:IsA("Accessory") then
+		basePart = asset:FindFirstChild("Handle")
+	elseif asset:IsA("BasePart") then
+		basePart = asset
+	elseif asset:IsA("Model") then
+		basePart = asset:FindFirstChildWhichIsA("BasePart", true)
+	end
+
+	if not basePart then
+		warn("No usable BasePart or Handle found inside asset.")
+		return
+	end
+
+	-- FINAL corrected CFrame rotation
+	local offset = CFrame.Angles(0, math.rad(180), math.rad(90)) * CFrame.new(0, -1, 0)
+	basePart.CFrame = rightArm.CFrame * offset
+
+	basePart.Anchored = false
+	basePart.CanCollide = false
+
+	local weld = Instance.new("Weld")
+	weld.Part0 = rightArm
+	weld.Part1 = basePart
+	weld.C0 = rightArm.CFrame:inverse() * basePart.CFrame
+	weld.Parent = rightArm
+
+	print("Sword now correctly attached and rotated in Right Hand.")
+
+	-- Wait for 3 seconds and then destroy the asset
+	task.wait(3)
+	asset:Destroy()
+	print("Asset destroyed after 3 seconds.")
+else
+	warn("Failed to load asset.")
+end
     end,
 
     amove1 = function()
