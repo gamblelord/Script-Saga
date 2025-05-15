@@ -194,7 +194,7 @@ local handlers = {
 -- Table of animation data for the animations
 local animDt = {
     move2 = { Speed = 2.4 },
-    move1 = { Speed = 4 },
+    move1 = { Speed = 2, TimePosition = 4 },
     amove1 = { Speed = 2 },
     amove2 = { Speed = 0.7 },
 }
