@@ -78,18 +78,18 @@ local newAnimations = {
     m4 = "17889290569", -- Replace with your new m4 animation ID
     ds = "10470104242", -- Replace with your new downslam animation ID
     up = "10503381238", -- Replace with your new mini uppercut animation ID
-    wc = "16310343179", -- Replace with your new wall combo animation ID
+    wc = "18903642853", -- Replace with your new wall combo animation ID
     fdash = "18715858574", -- Replace with your new front dash animation ID
     bdash = "696969", -- Replace with your new back dash animation ID
     ldash = "10480796021", -- Replace with your new left dash animation ID
     rdash = "10480793962", -- Replace with your new right dash animation ID
-    awk = "13716964686", -- Replace with your new awakening animation ID
+    awk = "113876851900426", -- Replace with your new awakening animation ID
     move1 = "18447913645", -- Replace with your new move 1 animation ID
     move2 = "15290930205", -- Replace with your new move 2 animation ID
     move3 = "16944345619", -- Replace with your new move 3 animation ID
     move4 = "130301810149072", -- Replace with your new move 4 animation ID
     amove1 = "140164642047188", -- .Replace with your new move awakening 1 animation ID
-    amove2 = "71060716968719", -- Replace with your new move awakening 2 animation ID
+    amove2 = "13639700348", -- Replace with your new move awakening 2 animation ID
     amove3 = "18447913645", -- Replace with your new move awakening 3 animation ID
     amove4 = "13927612951", -- Replace with your new move awakening 4 animation ID
 }
@@ -194,9 +194,10 @@ local handlers = {
 -- Table of animation data for the animations
 local animDt = {
     move2 = { Speed = 2.4 },
-    move1 = { Speed = 2, TimePosition = 4 },
+    move1 = { Weight = 10, Speed = 3, TimePosition = 3 },
     amove1 = { Speed = 2 },
-    amove2 = { Speed = 0.7 },
+    amove2 = { Speed = 0.1 },
+    awk = { Speed = 4 },
 }
 
 local hum = char:FindFirstChildOfClass("Humanoid")
@@ -223,3 +224,68 @@ lplr:GetAttributeChangedSignal("Ultimate"):Connect(function()
         task.wait(0.5) SetMoveNames()
     end
 end)
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+
+-- Local Player
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Color tweening function
+local function tweenColor(imageLabel, startColor, endColor, duration)
+    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)
+    local goal = {ImageColor3 = endColor}
+    local tween = TweenService:Create(imageLabel, tweenInfo, goal)
+    tween:Play()
+end
+
+-- GUI and color adjustment function
+local function updateBarColor()
+    -- Find the ScreenGui on the screen
+    local screenGui = playerGui:FindFirstChild("ScreenGui")
+    if not screenGui then return end
+
+    -- Find the MagicHealth Frame
+    local magicHealthFrame = screenGui:FindFirstChild("MagicHealth")
+    if not magicHealthFrame then return end
+
+    -- Find the Health Frame
+    local healthFrame = magicHealthFrame:FindFirstChild("Health")
+    if not healthFrame then return end
+
+    -- Find the Bar Frame
+    local barFrame = healthFrame:FindFirstChild("Bar")
+    if not barFrame then return end
+
+    -- Find the ImageLabel with ImageColor3 property inside the Bar Frame
+    local imageLabel = barFrame:FindFirstChild("Bar")
+    if not imageLabel or not imageLabel:IsA("ImageLabel") then return end
+
+    -- Set initial color to Yellow
+    imageLabel.ImageColor3 = Color3.fromRGB(255, 255, 0) -- Yellow
+
+    -- Smooth transition from yellow to Cyan
+    tweenColor(imageLabel, Color3.fromRGB(255, 255, 0), Color3.fromRGB(0, 255, 255), 2)
+end
+
+-- Check the GUI again when the character resets
+local function onCharacterAdded(character)
+    -- Update the GUI
+    updateBarColor()
+end
+
+-- Check the local player's character
+local function onPlayerAdded()
+    local character = player.Character or player.CharacterAdded:Wait()
+    onCharacterAdded(character)
+
+    -- Check again when the character changes
+    player.CharacterAdded:Connect(onCharacterAdded)
+end
+
+-- Check when the player is added
+Players.PlayerAdded:Connect(onPlayerAdded)
+if player then
+    onPlayerAdded()
+end
