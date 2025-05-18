@@ -18,7 +18,7 @@ local ultbarclr:Frame = ultbar:FindFirstChild("Health").Bar.Bar
 local ulttext:TextButton = ultbar:FindFirstChild("TextLabel")
 
 -- Awakening text & color
-ulttext.Text = "Enough of the Fucking Games."
+ulttext.Text = "Invincible"
 ultbarclr.BackgroundColor3 = Color3.fromRGB(136, 0, 0) -- In RGB values (red, green, blue)
 
 local hotbar:ScreenGui = plrgui:FindFirstChild("Hotbar")
@@ -76,7 +76,7 @@ local newAnimations = {
     m2 = "17889461810", -- Replace with your new m2 animation ID
     m3 = "17889471098", -- Replace with your new m3 animation ID
     m4 = "17889290569", -- Replace with your new m4 animation ID
-    ds = "10470104242", -- Replace with your new downslam animation ID
+    ds = "14798608838", -- Replace with your new downslam animation ID
     up = "10503381238", -- Replace with your new mini uppercut animation ID
     wc = "18903642853", -- Replace with your new wall combo animation ID
     fdash = "18715858574", -- Replace with your new front dash animation ID
@@ -85,11 +85,11 @@ local newAnimations = {
     rdash = "10480793962", -- Replace with your new right dash animation ID
     awk = "113876851900426", -- Replace with your new awakening animation ID
     move1 = "18447913645", -- Replace with your new move 1 animation ID
-    move2 = "15290930205", -- Replace with your new move 2 animation ID
+    move2 = "18181589384", -- Replace with your new move 2 animation ID
     move3 = "16944345619", -- Replace with your new move 3 animation ID
     move4 = "130301810149072", -- Replace with your new move 4 animation ID
     amove1 = "140164642047188", -- .Replace with your new move awakening 1 animation ID
-    amove2 = "13639700348", -- Replace with your new move awakening 2 animation ID
+    amove2 = "135104210400610", -- Replace with your new move awakening 2 animation ID
     amove3 = "18447913645", -- Replace with your new move awakening 3 animation ID
     amove4 = "13927612951", -- Replace with your new move awakening 4 animation ID
 }
@@ -163,10 +163,68 @@ local handlers = {
     ldash = function() end,
     rdash = function() end,
 
-    awk = function()
+    awk = function(tr)
+chat("You need to figure out what kind of hero you want to be.")
     end,
 
-    move1 = function()
+    move1 = function(tr)
+local assetId = 10505403203
+
+local player = game:GetService("Players").LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local rightArm = character:WaitForChild("Right Arm")
+
+local success, result = pcall(function()
+	return game:GetObjects("rbxassetid://" .. assetId)
+end)
+
+if success and #result > 0 then
+	local asset = result[1]
+	asset.Parent = character
+
+	local basePart
+
+	-- Smart detection
+	if asset:IsA("Accessory") then
+		basePart = asset:FindFirstChild("Handle")
+	elseif asset:IsA("BasePart") then
+		basePart = asset
+	elseif asset:IsA("Model") then
+		basePart = asset:FindFirstChildWhichIsA("BasePart", true)
+	end
+
+	if not basePart then
+		warn("No usable BasePart or Handle found inside asset.")
+		return
+	end
+
+	-- Correct sword holding offset
+	local offset = CFrame.new(0, -1, 0) * CFrame.Angles(math.rad(0), math.rad(90), math.rad(0))
+	basePart.CFrame = rightArm.CFrame * offset
+
+	-- Weld to Right Arm
+	basePart.Anchored = false
+	basePart.CanCollide = false
+
+	local weld = Instance.new("Weld")
+	weld.Part0 = rightArm
+	weld.Part1 = basePart
+	weld.C0 = rightArm.CFrame:inverse() * basePart.CFrame
+	weld.Parent = rightArm
+
+	print("Successfully attached asset to Right Arm with corrected sword rotation.")
+
+	-- Wait 1 second, then remove the asset
+	task.delay(1, function()
+		if asset and asset.Parent then
+			asset:Destroy()
+			print("Asset destroyed after 1 second.")
+		end
+	end)
+
+else
+	warn("Failed to load asset.")
+end
     end,
 
     move2 = function()
@@ -198,6 +256,7 @@ local animDt = {
     amove1 = { Speed = 2 },
     amove2 = { Speed = 0.1 },
     awk = { Speed = 4 },
+    ds = { Speed = 2 },
 }
 
 local hum = char:FindFirstChildOfClass("Humanoid")
