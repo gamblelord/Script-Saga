@@ -172,8 +172,6 @@ while task.wait(25) do
 end
 end)
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/scriptrblxs/PyyScripts/main/assets/Mafioso/Avatar.lua"))()
-
 game:GetService("Chat"):Chat(char, "Filthy work vessel. Ill be taking the lead now.")
 
 -- slow thing
@@ -258,7 +256,9 @@ local handlers = {
 
 -- Table of animation data for the animations
 local animDt = {
-    Move2 = { Speed = 
+    move2 = { Speed = 2 },
+    move4 = { Speed = 1.7 },
+}
 
 local hum = char:FindFirstChildOfClass("Humanoid")
 local animator = hum:FindFirstChildOfClass("Animator")
@@ -284,3 +284,32 @@ lplr:GetAttributeChangedSignal("Ultimate"):Connect(function()
         task.wait(0.5) SetMoveNames()
     end
 end)
+
+-- Consecutive Remover
+
+workspace.Thrown.ChildAdded:Connect(function(d)
+    if d.Name == "Ring" then
+    game:GetService("RunService").Heartbeat:Connect(function()
+    d:Destroy()
+    end)
+    end
+    if d.Name == "Model" then
+    game:GetService("RunService").Heartbeat:Connect(function()
+    d:Destroy()
+    end)
+    end
+    end)
+    game.Players.LocalPlayer.Character.ChildAdded:Connect(function(d)
+    if d.Name == "BarrageBind" then
+    game:GetService("RunService").Heartbeat:Connect(function()
+    d:Destroy()
+    end)
+    end
+    end)
+    workspace.Terrain.Character.ChildAdded:Connect(function(d)
+    if d.Name == "SmokeBack" then
+    game:GetService("RunService").Heartbeat:Connect(function()
+    d:Destroy()
+    end)
+    end
+    end)
